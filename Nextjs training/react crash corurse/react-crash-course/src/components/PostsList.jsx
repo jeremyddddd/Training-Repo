@@ -6,15 +6,10 @@ import Modal from './Modal';
 import NewPost from './NewPost';
 
 function PostsList({isPosting, onStopPosting}) {
-  const[enteredBody, setEnteredBody] = useState('');
-  const[enteredAuthor, setEnteredAuthor] = useState('');
+  const [posts, setPosts] = useState([]);
 
-  function bodyChangeHandler(event) {
-    setEnteredBody(event.target.value);
-  }
-
-  function authorChangeHandler(event) {
-    setEnteredAuthor(event.target.value);
+  function addPostHandler(postData) {
+    setPosts((existingPosts) => [postData, ...existingPosts]);
   }
 
     return (
@@ -22,16 +17,23 @@ function PostsList({isPosting, onStopPosting}) {
           {isPosting && (
             <Modal onClose={onStopPosting}>
               <NewPost 
-                onBodyChange={bodyChangeHandler} 
-                onAuthorChange={authorChangeHandler}
-                onCancel={onStopPosting} 
+                onCancel={onStopPosting}
+                onAddPost={addPostHandler}
               />
             </Modal>
           )}
-          <ul className={classes.posts}>
-            <Post author={enteredAuthor} body={enteredBody} />
-            <Post author="Manuel" body="React is Good"/>
-          </ul>
+          {posts.length > 0 && (
+            <ul className={classes.posts}>
+              {posts.map((post) => <Post key={post.body} author={post.author} body={post.body} />)}
+            </ul>
+          )}
+          {posts.length === 0 && (
+            <div style={{ textAlign: 'center', color: 'white' }}>
+              <h2>There are no posts yet.</h2>
+              <p>Start adding some!</p>
+            </div>
+          )}
+
         </>
       );
 }
