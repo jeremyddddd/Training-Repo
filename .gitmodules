@@ -1,0 +1,3 @@
+[submodule "NextJsCourse"]
+	path = NextJsCourse
+	url = https://github.com/mschwarzmueller/nextjs-course-code.git
